@@ -32,8 +32,13 @@ spec:
         gardener.cloud/role: system-component
     spec:
       tolerations:
-      # Make sure kube-controllers gets scheduled on all nodes.
-      - effect: NoSchedule
+      - key: node.kubernetes.io/not-ready
+        operator: Exists
+      - key: node.kubernetes.io/network-unavailable
+        operator: Exists
+      - key: node.cloudprovider.kubernetes.io/uninitialized
+        operator: Exists
+      - key: CriticalAddonsOnly
         operator: Exists
       serviceAccountName: calico-kube-controllers
       priorityClassName: system-cluster-critical
